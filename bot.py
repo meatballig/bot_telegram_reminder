@@ -97,6 +97,32 @@ def handle_updates(groups, state, schedule):
                 send(cid, "<b>Расписание:</b>\n" + "\n".join(lines))
 
 
+def lesson_on(l, d):
+    """Проходит ли занятие в день d."""
+    if "date" in l:
+        return l["date"] == d.isoformat()
+    return DAYS[d.weekday()] in l.get("days", [])
+
+
+def due_digests(schedule, groups, config, tz, now):
+    """Ежедневная сводка: все занятия дня с датой и временем начала."""
+    h, mi = map(int, config.get("digest_time", "11:00").split(":"))
+    t = datetime.combine(now.date(), dtime(h, mi), tzinfo=tz)
+    if not (t <= now < t + timedelta(minutes=GRACE_MIN)):
+        return
+    d = now.date()
+    for cid in groups:
+        todays = sorted((l for l in schedule
+                         if str(l["group"]) == cid and lesson_on(l, d)),
+                        key=lambda l: l["time"])
+        if not todays:
+            continue
+        lines = [f"• {d.strftime('%d.%m.%Y')} {l['time']} — {esc(l['title'])}"
+                 for l in todays]
+        text = f"📅 <b>Занятия на сегодня ({DAYS_RU[d.weekday()]}):</b>\n" + "\n".join(lines)
+        yield f"digest|{cid}|{d.isoformat()}", t, cid, text
+
+
 def due_reminders(schedule, groups, tz, now):
     """Выдаёт (ключ, chat_id, текст) для напоминаний, чьё время наступило."""
     for l in schedule:
@@ -105,10 +131,7 @@ def due_reminders(schedule, groups, tz, now):
             continue
         h, mi = map(int, l["time"].split(":"))
         for d in (now.date(), now.date() + timedelta(days=1)):
-            if "date" in l:
-                if l["date"] != d.isoformat():
-                    continue
-            elif DAYS[d.weekday()] not in l.get("days", []):
+            if not lesson_on(l, d):
                 continue
             start = datetime.combine(d, dtime(h, mi), tzinfo=tz)
             for before in l.get("remind", [60]):
@@ -138,7 +161,9 @@ def main():
 
     handle_updates(groups, state, schedule)
 
-    for key, start, cid, text in due_reminders(schedule, groups, tz, now):
+    due = list(due_digests(schedule, groups, config, tz, now))
+    due += list(due_reminders(schedule, groups, tz, now))
+    for key, start, cid, text in due:
         if key in state["sent"]:
             continue
         if send(cid, text):

@@ -89,5 +89,95 @@
     "remind": [
       10
     ]
+  },
+  {
+    "group": "-5531325762",
+    "days": [
+      "mon",
+      "tue",
+      "wed",
+      "thu",
+      "fri"
+    ],
+    "time": "11:00",
+    "title": "Урок 11:00",
+    "remind": [
+      60
+    ]
+  },
+  {
+    "group": "-5531325762",
+    "days": [
+      "mon",
+      "tue",
+      "wed",
+      "thu",
+      "fri"
+    ],
+    "time": "12:00",
+    "title": "Урок 12:00",
+    "remind": [
+      60
+    ]
+  },
+  {
+    "group": "-5531325762",
+    "days": [
+      "mon",
+      "tue",
+      "wed",
+      "thu",
+      "fri"
+    ],
+    "time": "13:00",
+    "title": "Урок 13:00",
+    "remind": [
+      60
+    ]
+  },
+  {
+    "group": "-5531325762",
+    "days": [
+      "mon",
+      "tue",
+      "wed",
+      "thu",
+      "fri"
+    ],
+    "time": "14:00",
+    "title": "Урок 14:00",
+    "remind": [
+      60
+    ]
+  },
+  {
+    "group": "-5531325762",
+    "days": [
+      "mon",
+      "tue",
+      "wed",
+      "thu",
+      "fri"
+    ],
+    "time": "15:00",
+    "title": "Урок 15:00",
+    "remind": [
+      60
+    ]
+  },
+  {
+    "group": "-5531325762",
+    "days": [
+      "mon",
+      "tue",
+      "wed",
+      "thu",
+      "fri"
+    ],
+    "time": "16:00",
+    "title": "Урок 16:00",
+    "remind": [
+      60
+    ]
   }
 ]
