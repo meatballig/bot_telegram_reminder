@@ -14,5 +14,5 @@ Single script `bot.py`, one run = one pass: (1) poll `getUpdates` and handle `/s
 - `data/groups.json` – connected chats (edited by bot commands or by hand).
 - `data/schedule.json` – lessons: `group` (chat id), `days` (mon..sun) or one-off `date`, `time` HH:MM, `title`, `remind` (minutes before), optional `link`/`note`.
 - `data/state.json` – `offset` for getUpdates and `sent` dedupe keys. The workflow commits `data/` back to the repo after each run, so this is the only persistence.
-- Cron is imprecise, so a reminder fires if now is within `GRACE_MIN` after its target time; dedupe via `sent` prevents repeats.
+- Cron is imprecise, so a reminder fires if now is within `GRACE_MIN` (45 min) after its target time; dedupe via `sent` prevents repeats.
 - getUpdates does not work if a webhook is set on the bot (`deleteWebhook` first).
