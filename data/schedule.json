@@ -1,11 +1,93 @@
 [
   {
     "group": "-5531325762",
-    "days": ["mon", "wed", "fri"],
+    "days": [
+      "mon",
+      "wed",
+      "fri"
+    ],
     "time": "19:08",
     "title": "Английский язык",
-    "remind": [60, 10],
+    "remind": [
+      60,
+      10
+    ],
     "link": "https://zoom.us/j/000000000",
     "note": "Не забудьте домашнее задание"
+  },
+  {
+    "group": "-5531325762",
+    "days": [
+      "mon",
+      "tue",
+      "wed",
+      "thu",
+      "fri"
+    ],
+    "time": "19:30",
+    "title": "Тест 19:30",
+    "remind": [
+      10
+    ]
+  },
+  {
+    "group": "-5531325762",
+    "days": [
+      "mon",
+      "tue",
+      "wed",
+      "thu",
+      "fri"
+    ],
+    "time": "20:00",
+    "title": "Тест 20:00",
+    "remind": [
+      10
+    ]
+  },
+  {
+    "group": "-5531325762",
+    "days": [
+      "mon",
+      "tue",
+      "wed",
+      "thu",
+      "fri"
+    ],
+    "time": "20:30",
+    "title": "Тест 20:30",
+    "remind": [
+      10
+    ]
+  },
+  {
+    "group": "-5531325762",
+    "days": [
+      "mon",
+      "tue",
+      "wed",
+      "thu",
+      "fri"
+    ],
+    "time": "21:00",
+    "title": "Тест 21:00",
+    "remind": [
+      10
+    ]
+  },
+  {
+    "group": "-5531325762",
+    "days": [
+      "mon",
+      "tue",
+      "wed",
+      "thu",
+      "fri"
+    ],
+    "time": "22:00",
+    "title": "Тест 22:00",
+    "remind": [
+      10
+    ]
   }
 ]
