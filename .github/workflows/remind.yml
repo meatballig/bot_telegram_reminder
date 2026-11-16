@@ -1,0 +1,31 @@
+name: remind
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"   # GitHub может запускать с задержкой 5-15 мин, это учтено в bot.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: remind
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python bot.py
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+      - name: Commit state
+        run: |
+          git config user.name "reminder-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data
+          git diff --cached --quiet || (git commit -m "update state [skip ci]" && git push)
