@@ -12,7 +12,7 @@ Telegram bot that reminds groups about upcoming classes. Runs for free as a GitH
 ## Architecture
 Single script `bot.py`, one run = one pass: (1) poll `getUpdates` and handle `/start`, `/stop`, `/list` (also drops groups when the bot is kicked), (2) send due reminders, (3) save state.
 - `data/groups.json` – connected chats (edited by bot commands or by hand).
-- `data/schedule.json` – lessons: `group` (chat id), `days` (mon..sun) or one-off `date`, `time` HH:MM, `title`, `remind` (minutes before), optional `link`/`note`.
+- `data/schedule.json` – lessons: `group` (chat id), `days` (mon..sun) or one-off `date`, `time` HH:MM, `title`, `remind` (minutes before), optional `link`/`note`, or `text` (send this exact message at `time`; with `"remind":[0]`; excluded from digest and /list).
 - Daily digest (`digest_time` in `data/config.json`, default 11:00) lists all of the day's lessons per group; skipped if none.
 - `data/state.json` – `offset` for getUpdates and `sent` dedupe keys. The workflow commits `data/` back to the repo after each run, so this is the only persistence.
 - Cron is imprecise, so a reminder fires if now is within `GRACE_MIN` (45 min) after its target time; dedupe via `sent` prevents repeats.

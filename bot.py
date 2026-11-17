@@ -89,7 +89,7 @@ def handle_updates(groups, state, schedule):
             groups.pop(cid, None)
             send(cid, "🛑 Группа отключена. /start — подключить снова.")
         elif cmd == "/list":
-            mine = [l for l in schedule if str(l["group"]) == cid]
+            mine = [l for l in schedule if str(l["group"]) == cid and "text" not in l]
             if not mine:
                 send(cid, "Для этого чата занятий пока нет.")
             else:
@@ -113,7 +113,8 @@ def due_digests(schedule, groups, config, tz, now):
     d = now.date()
     for cid in groups:
         todays = sorted((l for l in schedule
-                         if str(l["group"]) == cid and lesson_on(l, d)),
+                         if str(l["group"]) == cid and lesson_on(l, d)
+                         and "text" not in l),
                         key=lambda l: l["time"])
         if not todays:
             continue
@@ -136,13 +137,15 @@ def due_reminders(schedule, groups, tz, now):
             start = datetime.combine(d, dtime(h, mi), tzinfo=tz)
             for before in l.get("remind", [60]):
                 t = start - timedelta(minutes=before)
-                if t <= now < t + timedelta(minutes=GRACE_MIN) and now < start:
+                if t <= now < t + timedelta(minutes=GRACE_MIN) and (now < start or "text" in l):
                     key = f"{cid}|{start.isoformat()}|{l['title']}|{before}"
                     when = "сейчас" if before == 0 else (
                         f"через {before} мин" if before < 60 else
                         f"через {before // 60} ч" + (f" {before % 60} мин" if before % 60 else ""))
                     text = f"⏰ <b>{esc(l['title'])}</b> — {when} (в {l['time']})"
-                    if l.get("note"):
+                    if "text" in l:  # произвольное сообщение в заданное время
+                        text = esc(l["text"])
+                    elif l.get("note"):
                         text += f"\n{esc(l['note'])}"
                     if l.get("link"):
                         text += f"\n{esc(l['link'])}"
