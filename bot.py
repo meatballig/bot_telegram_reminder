@@ -135,13 +135,19 @@ def due_reminders(schedule, groups, tz, now):
             if not lesson_on(l, d):
                 continue
             start = datetime.combine(d, dtime(h, mi), tzinfo=tz)
-            for before in l.get("remind", [60]):
+            befores = l.get("remind", [60])
+            for before in befores:
                 t = start - timedelta(minutes=before)
                 if t <= now < t + timedelta(minutes=GRACE_MIN) and (now < start or "text" in l):
+                    # если уже наступило более позднее напоминание, это устарело
+                    if any(b2 < before and start - timedelta(minutes=b2) <= now
+                           for b2 in befores):
+                        continue
                     key = f"{cid}|{start.isoformat()}|{l['title']}|{before}"
-                    when = "сейчас" if before == 0 else (
-                        f"через {before} мин" if before < 60 else
-                        f"через {before // 60} ч" + (f" {before % 60} мин" if before % 60 else ""))
+                    left = max(0, -(-int((start - now).total_seconds()) // 60))  # минут до начала, вверх
+                    when = "сейчас" if left == 0 else (
+                        f"через {left} мин" if left < 60 else
+                        f"через {left // 60} ч" + (f" {left % 60} мин" if left % 60 else ""))
                     text = f"⏰ <b>{esc(l['title'])}</b> — {when} (в {l['time']})"
                     if "text" in l:  # произвольное сообщение в заданное время
                         text = esc(l["text"])
