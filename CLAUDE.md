@@ -16,5 +16,5 @@ Single script `bot.py`, one run = one pass: (1) poll `getUpdates` and handle `/s
 - Daily digest (`digest_time` in `data/config.json`, default 11:00) lists all of the day's lessons per group; skipped if none.
 - `data/state.json` – `offset` for getUpdates and `sent` dedupe keys. The workflow commits `data/` back to the repo after each run, so this is the only persistence.
 - Reminder text shows the real minutes left; if a later reminder of the same lesson is already due, the earlier one is skipped.
-- Cron is imprecise, so a reminder fires if now is within `GRACE_MIN` (45 min) after its target time; dedupe via `sent` prevents repeats.
+- Cron is imprecise, so a reminder fires if now is within `GRACE_MIN` (15 min) after its target time; dedupe via `sent` prevents repeats.
 - getUpdates does not work if a webhook is set on the bot (`deleteWebhook` first).

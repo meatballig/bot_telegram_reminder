@@ -16,7 +16,7 @@ from zoneinfo import ZoneInfo
 
 DATA = Path(__file__).parent / "data"
 TOKEN = os.environ.get("BOT_TOKEN", "")
-GRACE_MIN = 45  # на сколько минут можно опоздать с напоминанием (cron в Actions бывает с задержкой)
+GRACE_MIN = 15  # на сколько минут можно опоздать с напоминанием (cron в Actions бывает с задержкой)
 DAYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
 DAYS_RU = ["пн", "вт", "ср", "чт", "пт", "сб", "вс"]
 
